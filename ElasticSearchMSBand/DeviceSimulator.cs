@@ -34,34 +34,39 @@
 
             while (!token.IsCancellationRequested)
             {
-                bool flip = (rand.Next(2) == 0);
-
-                NewRandomVal(ref deviceData.maxElevation, 50, 5000, 50, 5);
-                deviceData.minElevation = deviceData.maxElevation - rand.Next(50);
-                NewRandomVal(ref deviceData.actualDistance, 0, 3, 2, 1000);
-                deviceData.stepsTaken = deviceData.actualDistance * 250;
-                deviceData.totalDistance = deviceData.actualDistance;
-                if (flip)
-                {
-                    deviceData.longitude = deviceData.longitude - (deviceData.actualDistance * 0.022);
-                }
-                else
-                {
-                    deviceData.longitude = deviceData.longitude + (deviceData.actualDistance * 0.022);
-                }
-
-                NewRandomVal(ref deviceData.averageHeartRate, 60, 180, 7, 5);
-                deviceData.lowestHeartRate = deviceData.averageHeartRate - rand.Next(7);
-                deviceData.peakHeartRate = deviceData.averageHeartRate + rand.Next(7);
-                NewRandomVal(ref deviceData.totalCalories, 2, 55, 15, 2);
-                NewRandomVal(ref deviceData.speed, 0, 23, 4, 10);
-                deviceData.endTime = DateTime.UtcNow;
-                deviceData.startTime = deviceData.endTime - Constants.simulationDelay;
-
+                AdjustDeviceValues(deviceData);
                 await SendDeviceEventAsync(simDevice, deviceData, client, token);
+                await Task.Delay(Constants.simulationDelay, token);
             }
 
             Console.WriteLine($"Simulate device cancelled: {simDevice.device.Id}");
+        }
+
+        private static void AdjustDeviceValues(DeviceData deviceData)
+        {
+            bool flip = (rand.Next(2) == 0);
+
+            NewRandomVal(ref deviceData.maxElevation, 50, 5000, 50, 5);
+            deviceData.minElevation = deviceData.maxElevation - rand.Next(50);
+            NewRandomVal(ref deviceData.actualDistance, 0, 3, 2, 1000);
+            deviceData.stepsTaken = deviceData.actualDistance*250;
+            deviceData.totalDistance = deviceData.actualDistance;
+            if (flip)
+            {
+                deviceData.longitude = deviceData.longitude - (deviceData.actualDistance*0.022);
+            }
+            else
+            {
+                deviceData.longitude = deviceData.longitude + (deviceData.actualDistance*0.022);
+            }
+
+            NewRandomVal(ref deviceData.averageHeartRate, 60, 180, 7, 5);
+            deviceData.lowestHeartRate = deviceData.averageHeartRate - rand.Next(7);
+            deviceData.peakHeartRate = deviceData.averageHeartRate + rand.Next(7);
+            NewRandomVal(ref deviceData.totalCalories, 2, 55, 15, 2);
+            NewRandomVal(ref deviceData.speed, 0, 23, 4, 10);
+            deviceData.endTime = DateTime.UtcNow;
+            deviceData.startTime = deviceData.endTime - Constants.simulationDelay;
         }
 
         private static async Task SendDeviceEventAsync(SimDevice simDevice, DeviceData deviceData,
@@ -72,8 +77,6 @@
 
             Console.WriteLine($"Simulate device: {simDevice.device.Id} : {messageString}");
             await client.SendEventAsync(message);
-
-            await Task.Delay(Constants.simulationDelay, token);
         }
 
         public static int NewRandomVal(ref int currentVal, int minVal, int maxVal, int variance, int flipFreq)
