@@ -1,0 +1,214 @@
+﻿<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js"></script>
+<link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js"></script>
+
+<!-- Attach CSS for step through tutorial tool -->
+<script src="~/Scripts/bootstrap-tour-standalone.min.js"></script>
+<link href="~/Content/bootstrap-tour-standalone.min.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    var totalCaloriesFacet = '';
+    var locationNameFacet = '';
+
+    $(function () {
+        // Load the initial data
+        currentPage = 1;
+        totalCaloriesFacet = '';
+        document.getElementById("q").focus();
+
+        Search();
+
+        // Execute search if user clicks enter
+        $("#q").keyup(function (event) {
+            if (event.keyCode == 13) {
+                Search();
+            }
+        });
+    });
+
+    function Search() {
+        $("#job_details_div").html("Loading...");
+        var q = $("#q").val();
+        // Get center of map to use to score the search results
+        $.post('/home/search',
+        {
+            q: q,
+            totalCaloriesFacet: totalCaloriesFacet,
+            locationNameFacet: locationNameFacet,
+            currentPage: currentPage
+        },
+        function (data) {
+            UpdateTotalCaloriesFacets(data.Facets.TotalCalories);
+            UpdateLocationNameFacets(data.Facets.LocationName);
+            UpdateDeviceDetails(data);
+            UpdatePagination(data.Count);
+            UpdateFilterReset();
+        });
+
+    }
+
+    function UpdateFilterReset() {
+        // This allows users to remove filters
+        var htmlString = '';
+        if ((totalCaloriesFacet != '') || (locationNameFacet != '')) {
+            htmlString += '<b>Current Filters:</b><br>';
+            if (totalCaloriesFacet != '')
+                htmlString += 'calories: ' + totalCaloriesFacet + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'totalCaloriesFacet\')">X</a>]<br>';
+            if (locationNameFacet != '')
+                htmlString += 'location: ' + locationNameFacet + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'locationNameFacet\')">X</a>]<br>';
+        }
+
+        $("#filterReset").html(htmlString);
+    }
+
+    function RemoveFacet(facet) {
+        // Remove a facet
+        if (facet == "totalCaloriesFacet")
+            totalCaloriesFacet = '';
+        if (facet == "locationNameFacet")
+            locationNameFacet = '';
+
+        Search();
+    }
+
+    function UpdatePagination(docCount) {
+        // Update the pagination
+        var totalPages = Math.round(docCount / 10);
+        // Set a max of 5 items and set the current page in middle of pages
+        var startPage = currentPage;
+        if ((startPage == 1) || (startPage == 2))
+            startPage = 1;
+        else
+            startPage -= 2;
+
+        var maxPage = startPage + 5;
+        if (totalPages < maxPage)
+            maxPage = totalPages + 1;
+        var backPage = parseInt(currentPage) - 1;
+        if (backPage < 1)
+            backPage = 1;
+        var forwardPage = parseInt(currentPage) + 1;
+
+        var htmlString = '<li><a href="javascript:void(0)" onclick="GoToPage(\'' + backPage + '\')" class="fa fa-angle-left"></a></li>';
+        for (var i = startPage; i < maxPage; i++) {
+            if (i == currentPage)
+                htmlString += '<li  class="active"><a href="#">' + i + '</a></li>';
+            else
+                htmlString += '<li><a href="javascript:void(0)" onclick="GoToPage(\'' + parseInt(i) + '\')">' + i + '</a></li>';
+        }
+
+        htmlString += '<li><a href="javascript:void(0)" onclick="GoToPage(\'' + forwardPage + '\')" class="fa fa-angle-right"></a></li>';
+        $("#pagination").html(htmlString);
+        $("#paginationFooter").html(htmlString);
+    }
+
+    function GoToPage(page) {
+        currentPage = page;
+        Search();
+    }
+
+    function UpdateTotalCaloriesFacets(data) {
+        var facetResultsHTML = '';
+        for (var i = 0; i < data.length; i++) {
+            var lowRange = parseInt(data[i].Value); 
+            var highRange = lowRange + 9; 
+ 
+            facetResultsHTML += '<li><a href="javascript:void(0)" onclick="ChooseTotalCaloriesFacet(\'' + data[i].Value + '\');">' + lowRange.toLocaleString() + ' - ' + highRange.toLocaleString() + ' (' + data[i].Count + ')</span></a></li>'; 
+        }
+
+        $("#total_calories_facets").html(facetResultsHTML);
+    }
+
+    function ChooseTotalCaloriesFacet(facet) {
+        totalCaloriesFacet = facet;
+        Search();
+    }
+
+    function UpdateLocationNameFacets(data) {
+        var facetResultsHTML = '';
+        for (var i = 0; i < data.length; i++) {
+            facetResultsHTML += '<li><a href="javascript:void(0)" onclick="ChooseLocationNameFacets(\'' + data[i].Value + '\');">' + data[i].Value + ' (' + data[i].Count + ')</span></a></li>';
+        }
+
+        $("#location_name_facets").html(facetResultsHTML);
+    }
+
+    function ChooseLocationNameFacets(facet) {
+        locationNameFacet = facet;
+        Search();
+    }
+
+    function UpdateDeviceDetails(data) {
+        var jobDetailsHTML = '';
+
+        $("#available-jobs-label").html('Matching Devices <small>(' + data.Count + " jobs)</small>");
+        $("#jobs-count").html(data.Count);
+
+        $("#available_jobs_subheader").html(data.Count + ' matching devices');
+
+        for (var i = 0; i < data.Results.length; i++) {
+
+            jobDetailsHTML += '<div class="jobs-item with-thumb" style="border: 1px solid">';
+            jobDetailsHTML += '<div class="clearfix visible-xs"></div>';
+
+            jobDetailsHTML += '<h6 class="title"><a href="/home/devicedetail?id=' + data.Results[i].Document.DeviceId + '">' + data.Results[i].Document.DeviceId + '</a>&nbsp;</h6>';
+
+            jobDetailsHTML += '</div>';
+
+        }
+
+        $("#job_details_div").html(jobDetailsHTML);
+    }
+
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 page-sidebar">
+            <aside>
+                <div class="sidebar-container">
+                    <div class="widget sidebar-widget jobs-search-widget">
+                        <h5 class="widget-title" id="title">Search</h5>
+                        <div class="widget-content clearfix">
+                            <div id="remote">
+                                <input class="form-control walkthrough-1" type="text" id="q" placeholder="Search Devices">
+                                <input type="submit" class="typeahead search-submit" value=" " onclick="Search();">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget sidebar-widget jobs-filter-widget">
+                        <h5 class="widget-title">Filter Results</h5>
+                        <p id="filterReset"></p>
+                        <div class="widget-content">
+                            <h6 id="locationNameFacetTitle">Locations</h6>
+                            <ul class="filter-list" id="location_name_facets"></ul>
+                            <h6 id="caloriesFacetTitle">Calories</h6>
+                            <ul class="filter-list" id="total_calories_facets"></ul>
+                            
+
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div> <!-- end .page-sidebar -->
+
+        <div class="col-sm-8 page-content">
+            <h3><span class="jobs-count" id="jobs-count"></span> Matching Devices</h3>
+
+            <div class="clearfix">
+
+                <ul id="pagination" class="pagination pull-right">
+                </ul>
+            </div>
+
+            <div id="job_details_div">
+            </div>
+
+            <div class="clearfix">
+                <ul id="paginationFooter" class="pagination pull-right">
+                </ul>
+            </div>
+        </div> <!-- end .page-content -->
+    </div> <!-- end .container -->
+</div> <!-- end .row -->
