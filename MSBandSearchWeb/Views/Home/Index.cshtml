@@ -148,13 +148,23 @@
 
         for (var i = 0; i < data.Results.length; i++) {
 
-            jobDetailsHTML += '<div class="jobs-item with-thumb" style="border: 1px solid">';
+            jobDetailsHTML += '<div class="jobs-item" style="border: 1px solid">';
             jobDetailsHTML += '<div class="clearfix visible-xs"></div>';
 
             jobDetailsHTML += '<h6 class="title"><a href="/home/devicedetail?id=' + data.Results[i].Document.DeviceId + '">' + data.Results[i].Document.DeviceId + '</a>&nbsp;</h6>';
-
+            jobDetailsHTML += '<span class="result-attribute">Location: ' + data.Results[i].Document.LocationName + '</span>';
+            jobDetailsHTML += '<span class="result-attribute">Calories: ' + data.Results[i].Document.TotalCalories + '</span>';
+            jobDetailsHTML += '<span class="result-attribute">Age: ' + data.Results[i].Document.UserAge + '</span>';
+            jobDetailsHTML += '<span class="result-attribute">Gender: ' + data.Results[i].Document.UserGender + '</span>';
+            // jobDetailsHTML += '<span class="result-attribute">User: ' + data.Results[i].Document.UserId + '</span>';
+            // jobDetailsHTML += '<span class="result-attribute">Last Seen: ' + data.Results[i].Document.EndTime + '</span>';
+            jobDetailsHTML += '<span class="result-attribute">Steps: ' + data.Results[i].Document.StepsTaken + '</span><br/>';
+            jobDetailsHTML += '<span class="result-attribute">Heart Rate: ' + data.Results[i].Document.AverageHeartRate + ' bpm</span>';
+            jobDetailsHTML += '<span class="result-attribute">Distance: ' + data.Results[i].Document.TotalDistance + ' miles</span>';
+            jobDetailsHTML += '<span class="result-attribute">Speed: ' + data.Results[i].Document.Speed + ' mph</span>';
+            jobDetailsHTML += '<span class="result-attribute">Elevation: ' + data.Results[i].Document.MaxElevation + ' ft</span>';
+    
             jobDetailsHTML += '</div>';
-
         }
 
         $("#job_details_div").html(jobDetailsHTML);

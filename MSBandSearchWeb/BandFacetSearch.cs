@@ -47,8 +47,8 @@ namespace ElasticSearchMSBandWeb
                     SearchMode = SearchMode.Any,
                     Top = 10,
                     Skip = currentPage - 1,
-                    // Limit results
-                    Select = new List<String>() {"DeviceId", "TotalCalories", "LocationName" },
+                    // Select all columns
+                    Select = new List<String>() { "*" },
                     // Add count
                     IncludeTotalResultCount = true,
                     // Add facets
