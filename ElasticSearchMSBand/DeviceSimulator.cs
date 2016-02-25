@@ -26,17 +26,16 @@
         private static async Task SimulateSingleDevice(SimDevice simDevice, CancellationToken token)
         {
             // random start so they don't all start at once
-            await Task.Delay(rand.Next(Convert.ToInt32(Constants.simulationDelay.TotalMilliseconds)) / 5, token);
+            await Task.Delay(rand.Next(Convert.ToInt32(Constants.SimulationDelay.TotalMilliseconds)) / 5, token);
 
-            DeviceClient client = DeviceClient.CreateFromConnectionString(Constants.ConnectionString,
-                simDevice.device.Id);
+            DeviceClient client = DeviceClient.CreateFromConnectionString(Constants.ConnectionString, simDevice.device.Id);
             var deviceData = simDevice.CurrentData;
 
             while (!token.IsCancellationRequested)
             {
                 AdjustDeviceValues(deviceData);
-                await SendDeviceEventAsync(simDevice, deviceData, client, token);
-                await Task.Delay(Constants.simulationDelay, token);
+                await SendDeviceEventAsync(simDevice, deviceData, client);
+                await Task.Delay(Constants.SimulationDelay, token);
             }
 
             Console.WriteLine($"Simulate device cancelled: {simDevice.device.Id}");
@@ -66,11 +65,10 @@
             NewRandomVal(ref deviceData.totalCalories, 2, 55, 15, 2);
             NewRandomVal(ref deviceData.speed, 0, 23, 4, 10);
             deviceData.endTime = DateTime.UtcNow;
-            deviceData.startTime = deviceData.endTime - Constants.simulationDelay;
+            deviceData.startTime = deviceData.endTime - Constants.SimulationDelay;
         }
 
-        private static async Task SendDeviceEventAsync(SimDevice simDevice, DeviceData deviceData,
-            DeviceClient client, CancellationToken token)
+        private static async Task SendDeviceEventAsync(SimDevice simDevice, DeviceData deviceData, DeviceClient client)
         {
             var messageString = JsonConvert.SerializeObject(deviceData);
             var message = new Microsoft.Azure.Devices.Client.Message(Encoding.UTF8.GetBytes(messageString));

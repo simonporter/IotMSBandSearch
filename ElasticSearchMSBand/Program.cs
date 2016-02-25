@@ -24,11 +24,11 @@
             ServicePointManager.Expect100Continue = false;
 
             CancellationTokenSource cts = new CancellationTokenSource();
-            List<SimDevice> devices = new List<SimDevice>(Constants.numDevices);
+            List<SimDevice> devices = new List<SimDevice>(Constants.NumDevices);
             var token = cts.Token;
             try
             {
-                devices = DeviceRegistrar.RegisterDevicesAsync(Constants.numDevices, token).Result;
+                devices = DeviceRegistrar.RegisterDevicesAsync(Constants.NumDevices, token).Result;
             }
             catch (Exception e)
             {
