@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SearchTests
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using FillTheDocDb;
     using FillTheDocDb.Models;
@@ -19,16 +20,22 @@ namespace SearchTests
 
             SearchIndexClient indexClient = serviceClient.Indexes.GetClient(Constants.IndexName);
 
-            
+            List<string> facetList = new List<string>();
+            facetList.Add("TotalCalories");
+            facetList.Add("UserGender");
+            facetList.Add("UserAge");
+
             var x = await serviceClient.Indexes.GetWithHttpMessagesAsync(Constants.IndexName);
+
+            SearchDocuments(indexClient, searchText: "*", facetList: facetList, filter: "UserGender eq 'Male'&LocationKeywords");
 
             SearchDocuments(indexClient, searchText: "Bellevue");
 
-            SearchDocuments(indexClient, searchText: "*", filter: "UserGender eq 'Male'");
+            SearchDocuments(indexClient, searchText: "*", facetList: facetList, filter: "UserGender eq 'Male'");
 
         }
 
-        private static void SearchDocuments(SearchIndexClient indexClient, string searchText, string filter = null)
+        private static void SearchDocuments(SearchIndexClient indexClient, string searchText, List<string> facetList = null,  string filter = null)
         {
             // Execute search based on search text and optional filter
             var sp = new SearchParameters();
@@ -36,6 +43,7 @@ namespace SearchTests
             if (!String.IsNullOrEmpty(filter))
             {
                 sp.Filter = filter;
+                sp.Facets = facetList;
             }
 
             DocumentSearchResult<IndexModel> response = indexClient.Documents.Search<IndexModel>(searchText, sp);

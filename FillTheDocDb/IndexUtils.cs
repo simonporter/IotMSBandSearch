@@ -32,6 +32,9 @@
             {
                 var batch = IndexBatch.Upload(documents);
                 indexClient.Documents.Index(batch);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("Index: {0} {1} {2}", documents[0].IndexKey, documents[0].LocationName, documents[0].UserGender);
+                Console.ResetColor();
             }
             catch (IndexBatchException e)
             {
@@ -43,7 +46,7 @@
                     String.Join(", ", e.IndexingResults.Where(r => !r.Succeeded).Select(r => r.Key)));
             }
             // Wait a while for indexing to complete.
-            Thread.Sleep(2000);
+            Thread.Sleep(100);
         }
     }
 }
