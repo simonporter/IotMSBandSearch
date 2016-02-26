@@ -173,7 +173,6 @@
     function UpdateDeviceDetails(data) {
         var deviceDetailsHTML = '';
 
-        //$("#available-devices-label").html('Matching Devices <small>(' + data.Count + " devices)</small>");
         $("#devices-count").html(data.Count);
 
         $("#available_devices_subheader").html(data.Count + ' matching devices');
@@ -213,7 +212,7 @@
                         <div class="widget-content clearfix">
                             <div id="remote">
                                 <input class="form-control walkthrough-1" type="text" id="q" placeholder="Search Devices">
-                                <input type="submit" class="typeahead search-submit" value=" " onclick="Search();">
+                                <input type="submit" class="typeahead search-submit" value="&nbsp;" onclick="Search();">
                             </div>
                         </div>
                     </div>
