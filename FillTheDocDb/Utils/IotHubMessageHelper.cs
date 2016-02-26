@@ -6,11 +6,13 @@
     using System.Threading.Tasks;
     using Microsoft.Azure.Search;
     using Microsoft.ServiceBus.Messaging;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Models;
 
     public class IotHubMessageHelper
     {
-        public async static Task GetHubMessagesWriteDocumentsTask(EventHubClient eventHubClient, SearchServiceClient searchServiceClient, string partition, DateTime fromTime)
+        public async static Task GetHubMessagesWriteDocumentsTask(EventHubClient eventHubClient, SearchServiceClient searchServiceClient, string partition, DateTime fromTime, CancellationToken cancellation)
         {
             var eventHubReceiver = eventHubClient.GetDefaultConsumerGroup().CreateReceiver(partition, fromTime);
             while (true)

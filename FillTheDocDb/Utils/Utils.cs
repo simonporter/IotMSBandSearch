@@ -2,10 +2,15 @@
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Threading.Tasks;
     using Models;
 
     public static class Utils
     {
+        public async static Task RunTask(List<Task> tasks)
+        {
+            await Task.WhenAll(tasks);
+        }
         public static List<string> ReadFileToList(string filename)
         {
             var lines = new List<string>();

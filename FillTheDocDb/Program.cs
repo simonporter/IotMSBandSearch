@@ -4,6 +4,9 @@
     using Microsoft.ServiceBus.Messaging;
     using Models;
     using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
     using Utils;
 
     class Program
@@ -11,7 +14,8 @@
         static void Main(string[] args)
         {
             // From time is how many minutes back from now we will read the IOT Hub to get messages
-            DateTime fromTime = DateTime.UtcNow.AddMinutes(-600);
+            //            DateTime fromTime = DateTime.UtcNow.AddMinutes(-600);
+            DateTime fromTime = DateTime.UtcNow;
 
             // Set to true to read from the sample data file instead of the IoT Hub.
             bool useTextFile = false;
@@ -37,6 +41,8 @@
 
             //Subscribe to the IotHub and get the data
             var eventHubClient = EventHubClient.CreateFromConnectionString(Constants.Hub2ConnectionString, Constants.IotHubD2CEndpoint);
+            CancellationToken cts = new CancellationToken();
+            var tasks = new List<Task>();
 
             var d2cPartitions = eventHubClient.GetRuntimeInformation().PartitionIds;
 
@@ -50,13 +56,17 @@
             else
             {
                 // Read the messages from the IoT Hub
+                
                 foreach (string partition in d2cPartitions)
                 {
                     // Get messages from the hub
-                    IotHubMessageHelper.GetHubMessagesWriteDocumentsTask(eventHubClient, serviceClient, partition, fromTime).Wait();
+                    tasks.Add(IotHubMessageHelper.GetHubMessagesWriteDocumentsTask(eventHubClient, serviceClient, partition, fromTime, cts));
                 }
+
+                var x = Utils.Utils.RunTask(tasks);
             }
 
+            //IotHubMessageHelper.GetHubMessagesWriteDocumentsTask(eventHubClient, serviceClient, partition, fromTime).Wait();
             Console.WriteLine("Press ENTER to exit.");
             Console.ReadLine();
         }
