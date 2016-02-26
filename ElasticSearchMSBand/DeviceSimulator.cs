@@ -26,7 +26,7 @@
         private static async Task SimulateSingleDevice(SimDevice simDevice, CancellationToken token)
         {
             // random start so they don't all start at once
-            await Task.Delay(rand.Next(Convert.ToInt32(Constants.SimulationDelay.TotalMilliseconds)) / 5, token);
+            await Task.Delay(rand.Next(Convert.ToInt32(Constants.SimulationDelay.TotalMilliseconds)), token);
 
             DeviceClient client = DeviceClient.CreateFromConnectionString(Constants.ConnectionString, simDevice.device.Id);
             var deviceData = simDevice.CurrentData;
