@@ -19,7 +19,7 @@
 
             var tasks = new List<Task>();
             var devicesToAdd = numDevices;
-            var deviceNum = 0;
+            var deviceNum = Constants.DeviceSeed;
 
             while (devicesToAdd > 0)
             {

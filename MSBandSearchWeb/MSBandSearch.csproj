@@ -39,13 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BingGeocoder">
-      <HintPath>..\packages\BingGeocodingHelper.1.1\lib\BingGeocoder.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Azure.Search">
       <HintPath>..\packages\Microsoft.Azure.Search.1.1.0\lib\net45\Microsoft.Azure.Search.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Rest.ClientRuntime">
       <HintPath>..\packages\Microsoft.Rest.ClientRuntime.1.8.1\lib\net45\Microsoft.Rest.ClientRuntime.dll</HintPath>
     </Reference>
