@@ -39,13 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BingGeocoder">
-      <HintPath>..\packages\BingGeocodingHelper.1.1\lib\BingGeocoder.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Azure.Search">
       <HintPath>..\packages\Microsoft.Azure.Search.1.1.0\lib\net45\Microsoft.Azure.Search.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Rest.ClientRuntime">
       <HintPath>..\packages\Microsoft.Rest.ClientRuntime.1.8.1\lib\net45\Microsoft.Rest.ClientRuntime.dll</HintPath>
     </Reference>
@@ -111,38 +107,6 @@
     <Content Include="Fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Images\bg-pattern.png" />
-    <Content Include="Images\content\bus-00.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-01.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-02.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-03.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-04.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-05.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-06.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-07.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-08.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\content\bus-09.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Images\header-logo-footer.png" />
-    <Content Include="Images\header-logo.png" />
     <Content Include="Images\search-blue.png" />
     <Content Include="Images\search.png" />
     <Content Include="Images\title-bg.png" />
@@ -158,7 +122,6 @@
     <Content Include="Scripts\jquery.flexslider-min.js" />
     <Content Include="Scripts\jquery.inview.min.js" />
     <Content Include="Scripts\jquery.responsive-tabs.js" />
-    <Content Include="Scripts\maplace.min.js" />
     <Content Include="Scripts\media.match.min.js" />
     <Content Include="Scripts\script.js" />
     <Content Include="Web.config">

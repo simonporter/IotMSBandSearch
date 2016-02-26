@@ -37,6 +37,7 @@ namespace ElasticSearchMSBandWeb
             string searchText, 
             string locationNameFacet,
             string totalCaloriesFacet, 
+            string heartRateFacet,
             int currentPage)
         {
             // Execute search based on query string
@@ -47,12 +48,12 @@ namespace ElasticSearchMSBandWeb
                     SearchMode = SearchMode.Any,
                     Top = 10,
                     Skip = currentPage - 1,
-                    // Limit results
-                    Select = new List<String>() {"DeviceId", "TotalCalories", "LocationName" },
+                    // Select all columns
+                    Select = new List<String>() { "*" },
                     // Add count
                     IncludeTotalResultCount = true,
                     // Add facets
-                    Facets = new List<String>() { "TotalCalories,interval:10", "LocationName" },
+                    Facets = new List<String>() { "TotalCalories,interval:10", "LocationName", "AverageHeartRate,interval:10" },
                 };
 
                 // Add filtering
@@ -61,10 +62,17 @@ namespace ElasticSearchMSBandWeb
                 {
                     filter = "LocationName eq '" + locationNameFacet + "'";
                 }
+
                 if (totalCaloriesFacet != "")
                 {
                     if (filter != null) { filter += " and "; }
-                    filter = "TotalCalories ge " + totalCaloriesFacet + " and TotalCalories lt " + (Convert.ToInt32(totalCaloriesFacet) + 10).ToString();
+                    filter += "TotalCalories ge " + totalCaloriesFacet + " and TotalCalories lt " + (Convert.ToInt32(totalCaloriesFacet) + 10).ToString();
+                }
+
+                if (heartRateFacet != "")
+                {
+                    if (filter != null) { filter += " and "; }
+                    filter += "AverageHeartRate ge " + heartRateFacet + " and AverageHeartRate lt " + (Convert.ToInt32(heartRateFacet) + 10).ToString();
                 }
 
                 sp.Filter = filter;

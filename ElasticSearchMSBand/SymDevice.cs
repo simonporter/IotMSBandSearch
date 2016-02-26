@@ -45,7 +45,7 @@
                     keywordsLoc = "ny, new york, nj, new jersey";
                     locationName = "Hoboken";
                     break;
-                case 5: // somewhere else
+                default: // somewhere else
                     longLoc = 11.320892;
                     latLoc = -23.593628;
                     keywordsLoc = "far away";

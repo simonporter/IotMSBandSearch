@@ -2,19 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
-    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Azure.Devices;
-    using Microsoft.Azure.Devices.Client;
-    using Newtonsoft.Json;
 
     internal class Program
     {
-        private static Random rand = new Random();
-
         private static void Main(string[] args)
         {
             Console.WriteLine($"Using ConnectionString: {Constants.ConnectionString}");
@@ -28,7 +21,16 @@
             var token = cts.Token;
             try
             {
-                devices = DeviceRegistrar.RegisterDevicesAsync(Constants.NumDevices, token).Result;
+                devices = DeviceRegistrar.GetExistingDevices(Constants.NumDevices, token).Result;
+                if (devices.Count == Constants.NumDevices)
+                {
+                    Console.WriteLine($"{devices.Count} devices found in batch, no registration needed");
+                }
+                else
+                {
+                    Console.WriteLine($"{devices.Count} devices found in batch, switching to register them");
+                    devices = DeviceRegistrar.RegisterDevicesAsync(Constants.NumDevices, token).Result;
+                }
             }
             catch (Exception e)
             {
@@ -48,7 +50,7 @@
 
             Console.WriteLine("Hit Enter to Exit!!");
             Console.ReadLine();
-            Console.WriteLine("##### Stopping simulation (wait 1 second)");
+            Console.WriteLine("##### Stopping simulation");
             cts.Cancel();
             Thread.Sleep(1000);
 

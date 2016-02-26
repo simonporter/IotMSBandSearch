@@ -62,11 +62,11 @@
 		transform: scale(1);
 	}
 
-	.latest-jobs-section {
+	.latest-devices-section {
 		padding-bottom: 40px;
 	}
 
-	.latest-jobs-section .flex-control-nav {
+	.latest-devices-section .flex-control-nav {
 	    top: auto;
 	    bottom: -30px;
 	    width: 100%;
@@ -257,7 +257,7 @@
 		background-position: -65px bottom;
 	}
 
-	.header-banner-box.post-job {
+	.header-banner-box.post-device {
 		background-position: -5px bottom;
 	}
 
@@ -464,14 +464,14 @@
 		clear: both;
 	}
 
-	.jobs-single-item .thumb,
-	.jobs-item.with-thumb .thumb {
+	.devices-single-item .thumb,
+	.devices-item.with-thumb .thumb {
 		display: inline-block;
 		float: none;
 		margin: 0 0 10px 0;
 	}
 
-	.jobs-item .social-icons.pull-right,
+	.devices-item .social-icons.pull-right,
 	.candidates-item .social-icons.pull-right {
 		display: none;
 	}
@@ -522,13 +522,13 @@
 		padding: 0;
 	}
 
-	.jobs-view-toggle:before,
-	.jobs-view-toggle:after {
+	.devices-view-toggle:before,
+	.devices-view-toggle:after {
 		display: table;
 		content: ' ';
 	}
 
-	.jobs-view-toggle:after {
+	.devices-view-toggle:after {
 		clear: both;
 	}
 
@@ -536,8 +536,8 @@
 		margin-bottom: 0;
 	}
 
-	.jobs-search-widget .widget-title,
-	.jobs-filter-widget .widget-title {
+	.devices-search-widget .widget-title,
+	.devices-filter-widget .widget-title {
 		padding-bottom: 0;
 		border-bottom: 0;
 		margin-bottom: 0;
@@ -545,8 +545,8 @@
 		cursor: pointer;
 	}
 
-	.jobs-search-widget .widget-title:after,
-	.jobs-filter-widget .widget-title:after {
+	.devices-search-widget .widget-title:after,
+	.devices-filter-widget .widget-title:after {
 		position: absolute;
 		display: block;
 		content: '\f054';
@@ -558,14 +558,14 @@
 		line-height: inherit;
 	}
 
-	.jobs-search-widget .widget-content,
-	.jobs-filter-widget .widget-content {
+	.devices-search-widget .widget-content,
+	.devices-filter-widget .widget-content {
 		display: none;
 		border-top: 1px solid #E6E6E6;
 		margin-top: 15px;
 	}
 
-	.jobs-search-widget .widget-content {
+	.devices-search-widget .widget-content {
 		padding-top: 20px;
 	}
 
@@ -609,7 +609,7 @@
 		background-position: -65px bottom;
 	}
 
-	.header-banner-box.post-job {
+	.header-banner-box.post-device {
 		background-position: -25px bottom;
 	}
 

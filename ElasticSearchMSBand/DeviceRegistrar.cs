@@ -1,4 +1,6 @@
-﻿namespace ElasticSearchMSBand
+﻿using System.Linq;
+
+namespace ElasticSearchMSBand
 {
     using System;
     using System.Collections.Generic;
@@ -19,7 +21,7 @@
 
             var tasks = new List<Task>();
             var devicesToAdd = numDevices;
-            var deviceNum = 0;
+            var deviceNum = Constants.DeviceSeed;
 
             while (devicesToAdd > 0)
             {
@@ -51,6 +53,27 @@
 
             Console.WriteLine($"Generated device key [{device.Id}]: {device.Authentication.SymmetricKey.PrimaryKey}");
             await Task.Delay(1, token);
+        }
+
+        public static async Task<List<SimDevice>> GetExistingDevices(int numDevices, CancellationToken token)
+        {
+            Console.WriteLine($"##### Get {numDevices} existing devices");
+
+            List<SimDevice> devices = new List<SimDevice>();
+
+            var existingDevices = await registryManager.GetDevicesAsync(numDevices, token);
+
+            foreach (var existingDevice in existingDevices)
+            {
+                lock (listLock)
+                {
+                    devices.Add(new SimDevice(existingDevice));
+                }
+
+                Console.WriteLine($"Existing device [{existingDevice.Id}]: {existingDevice.Authentication.SymmetricKey.PrimaryKey}");
+            }
+
+            return devices;
         }
     }
 }

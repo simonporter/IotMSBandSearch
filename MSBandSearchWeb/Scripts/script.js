@@ -231,10 +231,10 @@ if ($.fn.fitVids) {
 
 
 
-// Latest Jobs Section Slider
+    // Latest device Section Slider
 // ---------------------------------------------------------
-if ($.fn.flexslider && $('.latest-jobs-section').length > 0) {
-	$('.latest-jobs-section .flexslider').flexslider({
+if ($.fn.flexslider && $('.latest-devices-section').length > 0) {
+	$('.latest-devices-section .flexslider').flexslider({
 		pauseOnHover: true,
 		controlNav: true,
 		directionNav: false,
@@ -245,7 +245,7 @@ if ($.fn.flexslider && $('.latest-jobs-section').length > 0) {
 
 
 
-// Latest Jobs Section Slider
+    // Latest device Section Slider
 // ---------------------------------------------------------
 if ($.fn.flexslider && $('.success-stories-section').length > 0) {
 	$('.success-stories-section .flexslider').each(function () {
@@ -519,9 +519,9 @@ $('.candidates-item').each(function () {
 
 
 
-// Jobs Item
+    // device Item
 // ---------------------------------------------------------
-$('.jobs-item').each(function () {
+$('.devices-item').each(function () {
 	var $item = $(this),
 		$content = $item.find('.content'),
 		$toggle = $item.find('.top-btns .toggle');
@@ -551,10 +551,10 @@ $('.jobs-item').each(function () {
 
 
 
-// Jobs Filters Range Slider
+// device Filters Range Slider
 // ---------------------------------------------------------
 if ($.fn.slider) {
-	$('.jobs-filter-widget .range-slider .slider, .compare-price-filter-widget .range-slider .slider').each(function () {
+	$('.devices-filter-widget .range-slider .slider, .compare-price-filter-widget .range-slider .slider').each(function () {
 		var $this = $(this),
 			min = $this.data('min'),
 			max = $this.data('max');
@@ -575,9 +575,9 @@ if ($.fn.slider) {
 
 
 
-// Jobs Filters List
+// device Filters List
 // ---------------------------------------------------------
-$('.jobs-filter-widget .filter-list, .compare-price-filter-widget .filter-list').each(function () {
+$('.devices-filter-widget .filter-list, .compare-price-filter-widget .filter-list').each(function () {
 	var $this = $(this),
 		$toggle = $this.siblings('.toggle');
 
@@ -614,11 +614,11 @@ $('.jobs-filter-widget .filter-list, .compare-price-filter-widget .filter-list')
 
 
 
-// Jobs Views
+// device Views
 // ---------------------------------------------------------
-$('.jobs-view-toggle').each(function () {
+$('.devices-view-toggle').each(function () {
 	var $this = $(this),
-		$items = $this.closest('.page-content').find('.jobs-item');
+		$items = $this.closest('.page-content').find('.devices-item');
 
 	$this.find('.btn').on('click', function (event) {
 		event.preventDefault();
@@ -644,7 +644,7 @@ $('.jobs-view-toggle').each(function () {
 
 // Search/Filter Toggle
 // ---------------------------------------------------------
-$('.jobs-search-widget, .jobs-filter-widget').each(function () {
+$('.devices-search-widget, .devices-filter-widget').each(function () {
 	var $this = $(this);
 
 	$this.find('.widget-title').on('click', function (event) {
@@ -658,7 +658,7 @@ $('.jobs-search-widget, .jobs-filter-widget').each(function () {
 
 function searchFilterToggle(XS) {
 	if (!XS.matches) {
-		$('.jobs-search-widget .widget-content, .jobs-filter-widget .widget-content').removeAttr('style');
+		$('.devices-search-widget .widget-content, .devices-filter-widget .widget-content').removeAttr('style');
 	}
 }
 
