@@ -28,13 +28,14 @@ namespace ElasticSearchMSBandWeb.Controllers
             string totalCaloriesFacet = "", 
             string locationNameFacet = "", 
             string heartRateFacet = "", 
+            string genderFacet = "",
             int currentPage = 0)
         {
             // If blank search, assume they want to search everything
             if (string.IsNullOrWhiteSpace(q))
                 q = "*";
 
-            var response = _bandFacetSearch.Search(q, locationNameFacet, totalCaloriesFacet, heartRateFacet, currentPage);
+            var response = _bandFacetSearch.Search(q, locationNameFacet, totalCaloriesFacet, heartRateFacet, genderFacet, currentPage);
             return new JsonResult
             {
                 // ***************************************************************************************************************************

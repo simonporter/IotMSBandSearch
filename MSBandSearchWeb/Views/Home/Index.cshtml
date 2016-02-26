@@ -10,6 +10,7 @@
     var totalCaloriesFacet = '';
     var locationNameFacet = '';
     var heartRateFacet = '';
+    var genderFacet = '';
     var currentPage = 1;
 
     $(function () {
@@ -20,7 +21,7 @@
 
         // Execute search if user clicks enter
         $("#q").keyup(function (event) {
-            if (event.keyCode == 13) {
+            if (event.keyCode === 13) {
                 Search();
             }
         });
@@ -35,12 +36,14 @@
             totalCaloriesFacet: totalCaloriesFacet,
             locationNameFacet: locationNameFacet,
             heartRateFacet: heartRateFacet,
+            genderFacet: genderFacet,
             currentPage: currentPage
         },
         function (data) {
             UpdateTotalCaloriesFacets(data.Facets.TotalCalories);
             UpdateLocationNameFacets(data.Facets.LocationName);
             UpdateHeartRateFacets(data.Facets.AverageHeartRate);
+            UpdateGenderFacets(data.Facets.UserGender);
             UpdatePagination(data.Count);
             UpdateDeviceDetails(data);
             UpdateFilterReset();
@@ -53,22 +56,26 @@
         var htmlString = '';
         var lowRange = 0;
         var highRange = 0;
-        if ((totalCaloriesFacet != '') || (locationNameFacet != '') || (heartRateFacet != '')) {
+        if ((totalCaloriesFacet !== '') || (locationNameFacet !== '') || (heartRateFacet !== '') || (genderFacet !== '')) {
             htmlString += '<b>Current Filters:</b><br>';
-            if (totalCaloriesFacet != '') {
+            if (totalCaloriesFacet !== '') {
                 lowRange = parseInt(totalCaloriesFacet);
                 highRange = lowRange + 9;
                 htmlString += 'calories: ' + lowRange + ' - ' + highRange + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'totalCaloriesFacet\')">X</a>]<br>';
             }
 
-            if (locationNameFacet != '') {
+            if (locationNameFacet !== '') {
                 htmlString += 'location: ' + locationNameFacet + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'locationNameFacet\')">X</a>]<br>';
             }
 
-            if (heartRateFacet != '') {
+            if (heartRateFacet !== '') {
                 lowRange = parseInt(heartRateFacet);
                 highRange = lowRange + 9;
                 htmlString += 'heart rate: ' + lowRange + ' - ' + highRange + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'heartRateFacet\')">X</a>]<br>';
+            }
+
+            if (genderFacet !== '') {
+                htmlString += 'gender: ' + genderFacet + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'genderFacet\')">X</a>]<br>';
             }
         }
 
@@ -83,6 +90,8 @@
             locationNameFacet = '';
         if (facet === 'heartRateFacet')
             heartRateFacet = '';
+        if (facet === 'genderFacet')
+            genderFacet = '';
         Search();
     }
 
@@ -91,7 +100,7 @@
         var totalPages = Math.round(docCount / 10);
         // Set a max of 5 items and set the current page in middle of pages
         var startPage = currentPage;
-        if ((startPage === 1) || (startPage === 2))
+        if ((startPage == 1) || (startPage == 2))
             startPage = 1;
         else
             startPage -= 2;
@@ -170,13 +179,27 @@
         Search();
     }
 
+    function UpdateGenderFacets(data) {
+        var facetResultsHTML = '';
+        for (var i = 0; i < data.length; i++) {
+            facetResultsHTML += '<li><a href="javascript:void(0)" onclick="ChooseGenderFacets(\'' + data[i].Value + '\');">' + data[i].Value + ' (' + data[i].Count + ')</span></a></li>';
+        }
+
+        $("#gender_facets").html(facetResultsHTML);
+    }
+
+    function ChooseGenderFacets(facet) {
+        genderFacet = facet;
+        Search();
+    }
+
     function UpdateDeviceDetails(data) {
         var deviceDetailsHTML = '';
 
         $("#devices-count").html(data.Count);
 
 
-        if (($("#q").val() === '') && (totalCaloriesFacet === '') && (locationNameFacet === '') && (heartRateFacet === '')) {
+        if (($("#q").val() === '') && (totalCaloriesFacet === '') && (locationNameFacet === '') && (heartRateFacet === '') && (genderFacet === '')) {
             $("#available_devices_subheader").html(data.Count + ' bands');
             $("#device_details_div").html("<h5>Select facets or search to get results.</h5>");
             $("#pagination").html("");
@@ -236,6 +259,8 @@
                             <ul class="filter-list" id="total_calories_facets"></ul>
                             <h6 id="heartRateFacetTitle">Heart Rate</h6>
                             <ul class="filter-list" id="heart_rate_facets"></ul>
+                            <h6 id="genderFacetTitle">Gender</h6>
+                             <ul class="filter-list" id="gender_facets"></ul>
                         </div>
                     </div>
                 </div>
