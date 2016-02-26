@@ -9,11 +9,11 @@
 <script type="text/javascript">
     var totalCaloriesFacet = '';
     var locationNameFacet = '';
+    var heartRateFacet = '';
 
     $(function () {
         // Load the initial data
         currentPage = 1;
-        totalCaloriesFacet = '';
         document.getElementById("q").focus();
 
         Search();
@@ -35,11 +35,13 @@
             q: q,
             totalCaloriesFacet: totalCaloriesFacet,
             locationNameFacet: locationNameFacet,
+            heartRateFacet: heartRateFacet,
             currentPage: currentPage
         },
         function (data) {
             UpdateTotalCaloriesFacets(data.Facets.TotalCalories);
             UpdateLocationNameFacets(data.Facets.LocationName);
+            UpdateHeartRateFacets(data.Facets.AverageHeartRate);
             UpdateDeviceDetails(data);
             UpdatePagination(data.Count);
             UpdateFilterReset();
@@ -50,12 +52,23 @@
     function UpdateFilterReset() {
         // This allows users to remove filters
         var htmlString = '';
-        if ((totalCaloriesFacet != '') || (locationNameFacet != '')) {
+        if ((totalCaloriesFacet != '') || (locationNameFacet != '') || (heartRateFacet != '')) {
             htmlString += '<b>Current Filters:</b><br>';
-            if (totalCaloriesFacet != '')
-                htmlString += 'calories: ' + totalCaloriesFacet + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'totalCaloriesFacet\')">X</a>]<br>';
-            if (locationNameFacet != '')
+            if (totalCaloriesFacet != '') {
+                var lowRange = parseInt(totalCaloriesFacet);
+                var highRange = lowRange + 9;
+                htmlString += 'calories: ' + lowRange + ' - ' + highRange + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'totalCaloriesFacet\')">X</a>]<br>';
+            }
+
+            if (locationNameFacet != '') {
                 htmlString += 'location: ' + locationNameFacet + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'locationNameFacet\')">X</a>]<br>';
+            }
+
+            if (heartRateFacet != '') {
+                var lowRange = parseInt(heartRateFacet);
+                var highRange = lowRange + 9;
+                htmlString += 'heart rate: ' + lowRange + ' - ' + highRange + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'heartRateFacet\')">X</a>]<br>';
+            }
         }
 
         $("#filterReset").html(htmlString);
@@ -67,7 +80,8 @@
             totalCaloriesFacet = '';
         if (facet == "locationNameFacet")
             locationNameFacet = '';
-
+        if (facet == 'heartRateFacet')
+            heartRateFacet = '';
         Search();
     }
 
@@ -138,10 +152,27 @@
         Search();
     }
 
+    function UpdateHeartRateFacets(data) {
+        var facetResultsHTML = '';
+        for (var i = 0; i < data.length; i++) {
+            var lowRange = parseInt(data[i].Value);
+            var highRange = lowRange + 9;
+
+            facetResultsHTML += '<li><a href="javascript:void(0)" onclick="ChooseHeartRateFacet(\'' + data[i].Value + '\');">' + lowRange.toLocaleString() + ' - ' + highRange.toLocaleString() + ' (' + data[i].Count + ')</span></a></li>';
+        }
+
+        $("#heart_rate_facets").html(facetResultsHTML);
+    }
+
+    function ChooseHeartRateFacet(facet) {
+        heartRateFacet = facet;
+        Search();
+    }
+
     function UpdateDeviceDetails(data) {
         var jobDetailsHTML = '';
 
-        $("#available-jobs-label").html('Matching Devices <small>(' + data.Count + " jobs)</small>");
+        $("#available-jobs-label").html('Matching Devices <small>(' + data.Count + " devices)</small>");
         $("#jobs-count").html(data.Count);
 
         $("#available_jobs_subheader").html(data.Count + ' matching devices');
@@ -151,7 +182,7 @@
             jobDetailsHTML += '<div class="jobs-item" style="border: 1px solid">';
             jobDetailsHTML += '<div class="clearfix visible-xs"></div>';
 
-            jobDetailsHTML += '<h6 class="title"><a href="/home/devicedetail?id=' + data.Results[i].Document.DeviceId + '">' + data.Results[i].Document.DeviceId + '</a>&nbsp;</h6>';
+            jobDetailsHTML += '<h6 class="title"><a href="/home/devicedetail?id=' + data.Results[i].Document.DeviceId + '">' + data.Results[i].Document.DeviceId + ' (User: ' + data.Results[i].Document.UserId + ')</a>&nbsp;</h6>';
             jobDetailsHTML += '<span class="result-attribute">Location: ' + data.Results[i].Document.LocationName + '</span>';
             jobDetailsHTML += '<span class="result-attribute">Calories: ' + data.Results[i].Document.TotalCalories + '</span>';
             jobDetailsHTML += '<span class="result-attribute">Age: ' + data.Results[i].Document.UserAge + '</span>';
@@ -195,6 +226,8 @@
                             <ul class="filter-list" id="location_name_facets"></ul>
                             <h6 id="caloriesFacetTitle">Calories</h6>
                             <ul class="filter-list" id="total_calories_facets"></ul>
+                            <h6 id="heartRateFacetTitle">Heart Rate</h6>
+                            <ul class="filter-list" id="heart_rate_facets"></ul>
                             
 
                         </div>

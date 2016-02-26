@@ -23,13 +23,18 @@ namespace ElasticSearchMSBandWeb.Controllers
             return View();
         }
 
-        public ActionResult Search(string q = "", string totalCaloriesFacet = "", string locationNameFacet = "", int currentPage = 0)
+        public ActionResult Search(
+            string q = "", 
+            string totalCaloriesFacet = "", 
+            string locationNameFacet = "", 
+            string heartRateFacet = "", 
+            int currentPage = 0)
         {
             // If blank search, assume they want to search everything
             if (string.IsNullOrWhiteSpace(q))
                 q = "*";
 
-            var response = _bandFacetSearch.Search(q, locationNameFacet, totalCaloriesFacet, currentPage);
+            var response = _bandFacetSearch.Search(q, locationNameFacet, totalCaloriesFacet, heartRateFacet, currentPage);
             return new JsonResult
             {
                 // ***************************************************************************************************************************

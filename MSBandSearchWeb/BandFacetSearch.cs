@@ -37,6 +37,7 @@ namespace ElasticSearchMSBandWeb
             string searchText, 
             string locationNameFacet,
             string totalCaloriesFacet, 
+            string heartRateFacet,
             int currentPage)
         {
             // Execute search based on query string
@@ -52,7 +53,7 @@ namespace ElasticSearchMSBandWeb
                     // Add count
                     IncludeTotalResultCount = true,
                     // Add facets
-                    Facets = new List<String>() { "TotalCalories,interval:10", "LocationName" },
+                    Facets = new List<String>() { "TotalCalories,interval:10", "LocationName", "AverageHeartRate,interval:10" },
                 };
 
                 // Add filtering
@@ -61,10 +62,17 @@ namespace ElasticSearchMSBandWeb
                 {
                     filter = "LocationName eq '" + locationNameFacet + "'";
                 }
+
                 if (totalCaloriesFacet != "")
                 {
                     if (filter != null) { filter += " and "; }
-                    filter = "TotalCalories ge " + totalCaloriesFacet + " and TotalCalories lt " + (Convert.ToInt32(totalCaloriesFacet) + 10).ToString();
+                    filter += "TotalCalories ge " + totalCaloriesFacet + " and TotalCalories lt " + (Convert.ToInt32(totalCaloriesFacet) + 10).ToString();
+                }
+
+                if (heartRateFacet != "")
+                {
+                    if (filter != null) { filter += " and "; }
+                    filter += "AverageHeartRate ge " + heartRateFacet + " and AverageHeartRate lt " + (Convert.ToInt32(heartRateFacet) + 10).ToString();
                 }
 
                 sp.Filter = filter;
