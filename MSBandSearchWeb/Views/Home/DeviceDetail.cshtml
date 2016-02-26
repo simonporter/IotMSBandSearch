@@ -1,4 +1,4 @@
-﻿<script src="http://twitter.github.io/typeahead.js/js/jquery-1.10.2.min.js"></script>
+﻿<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.10.2.min.js"></script>
 
 <script>
     $(function () {
@@ -6,7 +6,6 @@
     });
     
     function LookUp() {
-        // Get center of map to use to score the search results
         var query_string = {};
         var query = window.location.search.substring(1);
         var vars = query.split("&");
@@ -20,25 +19,6 @@
             });
         }
 
-    }
-
-    function CleanText(text)
-    {
-        while (text.indexOf('â€¢') > -1)
-        {
-            text = text.replace('â€¢', '<br />- ');
-        }
-
-        while (text.indexOf(/\n/g) > -1) {
-            text = text.replace(/\n/g, "<br />");
-        }
-
-        while (text.indexOf('â€™') > -1) {
-            text = text.replace('â€™', "'");
-        }
-
-        
-        return text;
     }
 
     function UpdateDeviceDetails(data) {

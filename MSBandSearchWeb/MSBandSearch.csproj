@@ -122,7 +122,6 @@
     <Content Include="Scripts\jquery.flexslider-min.js" />
     <Content Include="Scripts\jquery.inview.min.js" />
     <Content Include="Scripts\jquery.responsive-tabs.js" />
-    <Content Include="Scripts\maplace.min.js" />
     <Content Include="Scripts\media.match.min.js" />
     <Content Include="Scripts\script.js" />
     <Content Include="Web.config">

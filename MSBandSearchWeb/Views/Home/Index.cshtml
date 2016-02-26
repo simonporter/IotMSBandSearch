@@ -10,10 +10,10 @@
     var totalCaloriesFacet = '';
     var locationNameFacet = '';
     var heartRateFacet = '';
+    var currentPage = 1;
 
     $(function () {
         // Load the initial data
-        currentPage = 1;
         document.getElementById("q").focus();
 
         Search();
@@ -29,7 +29,6 @@
     function Search() {
         $("#device_details_div").html("Loading...");
         var q = $("#q").val();
-        // Get center of map to use to score the search results
         $.post('/home/search',
         {
             q: q,
@@ -52,11 +51,13 @@
     function UpdateFilterReset() {
         // This allows users to remove filters
         var htmlString = '';
+        var lowRange = 0;
+        var highRange = 0;
         if ((totalCaloriesFacet != '') || (locationNameFacet != '') || (heartRateFacet != '')) {
             htmlString += '<b>Current Filters:</b><br>';
             if (totalCaloriesFacet != '') {
-                var lowRange = parseInt(totalCaloriesFacet);
-                var highRange = lowRange + 9;
+                lowRange = parseInt(totalCaloriesFacet);
+                highRange = lowRange + 9;
                 htmlString += 'calories: ' + lowRange + ' - ' + highRange + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'totalCaloriesFacet\')">X</a>]<br>';
             }
 
@@ -65,8 +66,8 @@
             }
 
             if (heartRateFacet != '') {
-                var lowRange = parseInt(heartRateFacet);
-                var highRange = lowRange + 9;
+                lowRange = parseInt(heartRateFacet);
+                highRange = lowRange + 9;
                 htmlString += 'heart rate: ' + lowRange + ' - ' + highRange + ' [<a href="javascript:void(0)" onclick="RemoveFacet(\'heartRateFacet\')">X</a>]<br>';
             }
         }
@@ -76,11 +77,11 @@
 
     function RemoveFacet(facet) {
         // Remove a facet
-        if (facet == "totalCaloriesFacet")
+        if (facet === "totalCaloriesFacet")
             totalCaloriesFacet = '';
-        if (facet == "locationNameFacet")
+        if (facet === "locationNameFacet")
             locationNameFacet = '';
-        if (facet == 'heartRateFacet')
+        if (facet === 'heartRateFacet')
             heartRateFacet = '';
         Search();
     }
@@ -90,7 +91,7 @@
         var totalPages = Math.round(docCount / 10);
         // Set a max of 5 items and set the current page in middle of pages
         var startPage = currentPage;
-        if ((startPage == 1) || (startPage == 2))
+        if ((startPage === 1) || (startPage === 2))
             startPage = 1;
         else
             startPage -= 2;
@@ -182,18 +183,17 @@
             deviceDetailsHTML += '<div class="devices-item" style="border: 1px solid">';
             deviceDetailsHTML += '<div class="clearfix visible-xs"></div>';
 
-            deviceDetailsHTML += '<h6 class="title"><a href="/home/devicedetail?id=' + data.Results[i].Document.DeviceId + '">' + data.Results[i].Document.DeviceId + ' (User: ' + data.Results[i].Document.UserId + ')</a>&nbsp;</h6>';
-            deviceDetailsHTML += '<span class="result-attribute">Location: ' + data.Results[i].Document.LocationName + '</span>';
-            deviceDetailsHTML += '<span class="result-attribute">Calories: ' + data.Results[i].Document.TotalCalories + '</span>';
-            deviceDetailsHTML += '<span class="result-attribute">Age: ' + data.Results[i].Document.UserAge + '</span>';
-            deviceDetailsHTML += '<span class="result-attribute">Gender: ' + data.Results[i].Document.UserGender + '</span>';
-            // deviceDetailsHTML += '<span class="result-attribute">User: ' + data.Results[i].Document.UserId + '</span>';
-            // deviceDetailsHTML += '<span class="result-attribute">Last Seen: ' + data.Results[i].Document.EndTime + '</span>';
-            deviceDetailsHTML += '<span class="result-attribute">Steps: ' + data.Results[i].Document.StepsTaken + '</span><br/>';
-            deviceDetailsHTML += '<span class="result-attribute">Heart Rate: ' + data.Results[i].Document.AverageHeartRate + ' bpm</span>';
-            deviceDetailsHTML += '<span class="result-attribute">Distance: ' + data.Results[i].Document.TotalDistance + ' miles</span>';
-            deviceDetailsHTML += '<span class="result-attribute">Speed: ' + data.Results[i].Document.Speed + ' mph</span>';
-            deviceDetailsHTML += '<span class="result-attribute">Elevation: ' + data.Results[i].Document.MaxElevation + ' ft</span>';
+            deviceDetailsHTML += '<h6 class="title"><a href="/home/devicedetail?id=' + data.Results[i].Document.DeviceId + '">' + data.Results[i].Document.DeviceId + ' (User: ' + data.Results[i].Document.UserId + ') </a>&nbsp;</h6>';
+            //(Last Seen: ' + data.Results[i].Document.EndTime + ')
+            deviceDetailsHTML += '<span class="result-attribute"><b>Location:</b> ' + data.Results[i].Document.LocationName + '</span>';
+            deviceDetailsHTML += '<span class="result-attribute"><b>Calories:</b> ' + data.Results[i].Document.TotalCalories + '</span>';
+            deviceDetailsHTML += '<span class="result-attribute"><b>Age:</b> ' + data.Results[i].Document.UserAge + '</span>';
+            deviceDetailsHTML += '<span class="result-attribute"><b>Gender:</b> ' + data.Results[i].Document.UserGender + '</span>';
+            deviceDetailsHTML += '<span class="result-attribute"><b>Steps:</b> ' + data.Results[i].Document.StepsTaken + '</span><br/>';
+            deviceDetailsHTML += '<span class="result-attribute"><b>Heart Rate:</b> ' + data.Results[i].Document.AverageHeartRate + ' bpm</span>';
+            deviceDetailsHTML += '<span class="result-attribute"><b>Distance:</b> ' + data.Results[i].Document.TotalDistance + ' miles</span>';
+            deviceDetailsHTML += '<span class="result-attribute"><b>Speed:</b> ' + data.Results[i].Document.Speed + ' mph</span>';
+            deviceDetailsHTML += '<span class="result-attribute"><b>Elevation:</b> ' + data.Results[i].Document.MaxElevation + ' ft</span>';
     
             deviceDetailsHTML += '</div>';
         }
@@ -228,8 +228,6 @@
                             <ul class="filter-list" id="total_calories_facets"></ul>
                             <h6 id="heartRateFacetTitle">Heart Rate</h6>
                             <ul class="filter-list" id="heart_rate_facets"></ul>
-                            
-
                         </div>
                     </div>
                 </div>
