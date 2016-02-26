@@ -27,7 +27,7 @@
     });
 
     function Search() {
-        $("#job_details_div").html("Loading...");
+        $("#device_details_div").html("Loading...");
         var q = $("#q").val();
         // Get center of map to use to score the search results
         $.post('/home/search',
@@ -170,35 +170,35 @@
     }
 
     function UpdateDeviceDetails(data) {
-        var jobDetailsHTML = '';
+        var deviceDetailsHTML = '';
 
-        $("#available-jobs-label").html('Matching Devices <small>(' + data.Count + " devices)</small>");
-        $("#jobs-count").html(data.Count);
+        $("#available-devices-label").html('Matching Devices <small>(' + data.Count + " devices)</small>");
+        $("#devices-count").html(data.Count);
 
-        $("#available_jobs_subheader").html(data.Count + ' matching devices');
+        $("#available_devices_subheader").html(data.Count + ' matching devices');
 
         for (var i = 0; i < data.Results.length; i++) {
 
-            jobDetailsHTML += '<div class="jobs-item" style="border: 1px solid">';
-            jobDetailsHTML += '<div class="clearfix visible-xs"></div>';
+            deviceDetailsHTML += '<div class="devices-item" style="border: 1px solid">';
+            deviceDetailsHTML += '<div class="clearfix visible-xs"></div>';
 
-            jobDetailsHTML += '<h6 class="title"><a href="/home/devicedetail?id=' + data.Results[i].Document.DeviceId + '">' + data.Results[i].Document.DeviceId + ' (User: ' + data.Results[i].Document.UserId + ')</a>&nbsp;</h6>';
-            jobDetailsHTML += '<span class="result-attribute">Location: ' + data.Results[i].Document.LocationName + '</span>';
-            jobDetailsHTML += '<span class="result-attribute">Calories: ' + data.Results[i].Document.TotalCalories + '</span>';
-            jobDetailsHTML += '<span class="result-attribute">Age: ' + data.Results[i].Document.UserAge + '</span>';
-            jobDetailsHTML += '<span class="result-attribute">Gender: ' + data.Results[i].Document.UserGender + '</span>';
-            // jobDetailsHTML += '<span class="result-attribute">User: ' + data.Results[i].Document.UserId + '</span>';
-            // jobDetailsHTML += '<span class="result-attribute">Last Seen: ' + data.Results[i].Document.EndTime + '</span>';
-            jobDetailsHTML += '<span class="result-attribute">Steps: ' + data.Results[i].Document.StepsTaken + '</span><br/>';
-            jobDetailsHTML += '<span class="result-attribute">Heart Rate: ' + data.Results[i].Document.AverageHeartRate + ' bpm</span>';
-            jobDetailsHTML += '<span class="result-attribute">Distance: ' + data.Results[i].Document.TotalDistance + ' miles</span>';
-            jobDetailsHTML += '<span class="result-attribute">Speed: ' + data.Results[i].Document.Speed + ' mph</span>';
-            jobDetailsHTML += '<span class="result-attribute">Elevation: ' + data.Results[i].Document.MaxElevation + ' ft</span>';
+            deviceDetailsHTML += '<h6 class="title"><a href="/home/devicedetail?id=' + data.Results[i].Document.DeviceId + '">' + data.Results[i].Document.DeviceId + ' (User: ' + data.Results[i].Document.UserId + ')</a>&nbsp;</h6>';
+            deviceDetailsHTML += '<span class="result-attribute">Location: ' + data.Results[i].Document.LocationName + '</span>';
+            deviceDetailsHTML += '<span class="result-attribute">Calories: ' + data.Results[i].Document.TotalCalories + '</span>';
+            deviceDetailsHTML += '<span class="result-attribute">Age: ' + data.Results[i].Document.UserAge + '</span>';
+            deviceDetailsHTML += '<span class="result-attribute">Gender: ' + data.Results[i].Document.UserGender + '</span>';
+            // deviceDetailsHTML += '<span class="result-attribute">User: ' + data.Results[i].Document.UserId + '</span>';
+            // deviceDetailsHTML += '<span class="result-attribute">Last Seen: ' + data.Results[i].Document.EndTime + '</span>';
+            deviceDetailsHTML += '<span class="result-attribute">Steps: ' + data.Results[i].Document.StepsTaken + '</span><br/>';
+            deviceDetailsHTML += '<span class="result-attribute">Heart Rate: ' + data.Results[i].Document.AverageHeartRate + ' bpm</span>';
+            deviceDetailsHTML += '<span class="result-attribute">Distance: ' + data.Results[i].Document.TotalDistance + ' miles</span>';
+            deviceDetailsHTML += '<span class="result-attribute">Speed: ' + data.Results[i].Document.Speed + ' mph</span>';
+            deviceDetailsHTML += '<span class="result-attribute">Elevation: ' + data.Results[i].Document.MaxElevation + ' ft</span>';
     
-            jobDetailsHTML += '</div>';
+            deviceDetailsHTML += '</div>';
         }
 
-        $("#job_details_div").html(jobDetailsHTML);
+        $("#device_details_div").html(deviceDetailsHTML);
     }
 
 </script>
@@ -208,7 +208,7 @@
         <div class="col-sm-4 page-sidebar">
             <aside>
                 <div class="sidebar-container">
-                    <div class="widget sidebar-widget jobs-search-widget">
+                    <div class="widget sidebar-widget devices-search-widget">
                         <h5 class="widget-title" id="title">Search</h5>
                         <div class="widget-content clearfix">
                             <div id="remote">
@@ -218,7 +218,7 @@
                         </div>
                     </div>
 
-                    <div class="widget sidebar-widget jobs-filter-widget">
+                    <div class="widget sidebar-widget devices-filter-widget">
                         <h5 class="widget-title">Filter Results</h5>
                         <p id="filterReset"></p>
                         <div class="widget-content">
@@ -237,7 +237,7 @@
         </div> <!-- end .page-sidebar -->
 
         <div class="col-sm-8 page-content">
-            <h3><span class="jobs-count" id="jobs-count"></span> Matching Devices</h3>
+            <h3><span class="devices-count" id="devices-count"></span> Matching Devices</h3>
 
             <div class="clearfix">
 
@@ -245,7 +245,7 @@
                 </ul>
             </div>
 
-            <div id="job_details_div">
+            <div id="device_details_div">
             </div>
 
             <div class="clearfix">

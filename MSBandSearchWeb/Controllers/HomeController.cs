@@ -48,7 +48,7 @@ namespace ElasticSearchMSBandWeb.Controllers
 
         public ActionResult LookUp(string id)
         {
-            // Take a key ID and do a lookup to get the job details
+            // Take a key ID and do a lookup to get the device details
             if (id != null)
             {
                 var response = _bandFacetSearch.LookUp(id);
