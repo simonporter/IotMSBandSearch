@@ -13,7 +13,7 @@
             this.device = device;
             var heartRate = rand.Next(60, 130);
             var elevation = rand.Next(250, 4000);
-            int locationRnd = rand.Next(5);
+            int locationRnd = rand.Next(6);
             double longLoc = 0;
             double latLoc = 0;
             string keywordsLoc = "";
@@ -44,6 +44,12 @@
                     latLoc = 40.829170;
                     keywordsLoc = "ny, new york, nj, new jersey";
                     locationName = "Hoboken";
+                    break;
+                case 5: // Florida
+                    longLoc = -73.965390;
+                    latLoc = 25.829170;
+                    keywordsLoc = "florida, miami, fl, marlins";
+                    locationName = "Miami";
                     break;
                 default: // somewhere else
                     longLoc = 11.320892;
