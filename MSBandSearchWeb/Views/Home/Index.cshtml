@@ -41,8 +41,8 @@
             UpdateTotalCaloriesFacets(data.Facets.TotalCalories);
             UpdateLocationNameFacets(data.Facets.LocationName);
             UpdateHeartRateFacets(data.Facets.AverageHeartRate);
-            UpdateDeviceDetails(data);
             UpdatePagination(data.Count);
+            UpdateDeviceDetails(data);
             UpdateFilterReset();
         });
 
@@ -175,7 +175,16 @@
 
         $("#devices-count").html(data.Count);
 
-        $("#available_devices_subheader").html(data.Count + ' matching devices');
+
+        if (($("#q").val() === '') && (totalCaloriesFacet === '') && (locationNameFacet === '') && (heartRateFacet === '')) {
+            $("#available_devices_subheader").html(data.Count + ' bands');
+            $("#device_details_div").html("<h5>Select facets or search to get results.</h5>");
+            $("#pagination").html("");
+            $("#paginationFooter").html("");
+            return;
+        }
+
+        $("#available_devices_subheader").html(data.Count + ' matching bands');
 
         for (var i = 0; i < data.Results.length; i++) {
 
@@ -234,7 +243,7 @@
         </div> <!-- end .page-sidebar -->
 
         <div class="col-sm-8 page-content">
-            <h3><span class="devices-count" id="devices-count"></span> Matching Devices</h3>
+            <h3><span class="devices-count" id="devices-count"></span> bands</h3>
 
             <div class="clearfix">
 
